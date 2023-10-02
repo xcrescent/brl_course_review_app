@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "312429107987",
+    "project_id": "brl-course-review-app",
+    "storage_bucket": "brl-course-review-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312429107987:android:a791da4c4575e6f37ad8e6",
+        "android_client_info": {
+          "package_name": "com.brl.course_review_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-hprk2YIz1pRIwRjDprvdmQv5_g711Jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312429107987:android:578e7962451467147ad8e6",
+        "android_client_info": {
+          "package_name": "com.brlakgec.brl_course_review_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-hprk2YIz1pRIwRjDprvdmQv5_g711Jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
