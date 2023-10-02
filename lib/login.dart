@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -152,28 +153,55 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _googleSignIn() async {
+    // print("clicked");
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential;
+      if (defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.android) {
+        // Sign in with Google on mobile platforms
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser!.authentication;
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      } else if (kIsWeb) {
+        // Sign in with Google on web
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        userCredential =
+            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      }
+      // else {
+      //   throw UnsupportedError('Unsupported platform');
+      // }
+
       if (!mounted) {
         return;
       }
       Navigator.pushReplacementNamed(context, '/review');
     } catch (e) {
       _errorMessage = e.toString();
-      // print(e);
+      print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          login ? 'Login' : 'Sign Up',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: GoogleFonts.roboto().fontFamily,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(18),
@@ -181,16 +209,16 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                login ? 'Login' : 'Sign Up',
-                style: TextStyle(
-                  fontSize: 30,
-                  // fontWeight: FontWeight.bold,
-                  fontFamily: GoogleFonts.roboto().fontFamily,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 18),
+              // Text(
+              //   login ? 'Login' : 'Sign Up',
+              //   style: TextStyle(
+              //     fontSize: 30,
+              //     // fontWeight: FontWeight.bold,
+              //     fontFamily: GoogleFonts.roboto().fontFamily,
+              //   ),
+              //   textAlign: TextAlign.center,
+              // ),
+              // const SizedBox(height: 18),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,

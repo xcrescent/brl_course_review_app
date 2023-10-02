@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReviewScreen extends StatefulWidget {
@@ -24,13 +25,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   List<String> sections = ['Section 1', 'Section 2', 'Section 3'];
-  List<String> videos = ['Video 1', 'Video 2', 'Video 3'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Course Review'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -72,26 +73,39 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 10),
-              DropdownButton<String>(
-                value: _selectedVideo,
-                onChanged: (String? newValue) {
+              // DropdownButton<String>(
+              //   value: _selectedVideo,
+              //   onChanged: (String? newValue) {
+              //     setState(() {
+              //       _selectedVideo = newValue!;
+              //     });
+              //   },
+              //   items: videos.map<DropdownMenuItem<String>>((String value) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Text(
+              //         value,
+              //         style: TextStyle(
+              //           fontSize: 16,
+              //           fontFamily: GoogleFonts.roboto().fontFamily,
+              //         ),
+              //         textAlign: TextAlign.center,
+              //       ),
+              //     );
+              //   }).toList(),
+              // ),
+              TextField(
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Video Number',
+                ),
+                onChanged: (value) {
                   setState(() {
-                    _selectedVideo = newValue!;
+                    _selectedVideo = 'Video $value';
                   });
                 },
-                items: videos.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: GoogleFonts.roboto().fontFamily,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                }).toList(),
               ),
               const SizedBox(height: 10),
               const Text(
