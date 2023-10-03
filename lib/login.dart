@@ -188,6 +188,31 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _forgorPassword() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    if (_email == null) {
+      _errorMessage = 'Please enter your email address';
+      setState(() {});
+      return;
+    }
+    try {
+      await auth.sendPasswordResetEmail(email: _email!);
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('A link is sent to your email to reset your password.'),
+          duration: Duration(seconds: 5), // Optional: Set duration
+        ),
+      );
+    } catch (e) {
+      _errorMessage = e.toString();
+      print(e);
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -285,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
               login ? const SizedBox(height: 18) : const SizedBox(height: 0),
               login
                   ? TextButton(
-                      onPressed: () {},
+                      onPressed: _forgorPassword,
                       child: const Text('Forgot Password?'),
                     )
                   : const SizedBox(height: 0),
